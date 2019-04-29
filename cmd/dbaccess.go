@@ -5,8 +5,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/lfourky/db-access/pkg/repository/mysql"
-	"github.com/lfourky/db-access/pkg/service"
+	"github.com/lfourky/go-transaction-management/pkg/repository/mysql"
+	"github.com/lfourky/go-transaction-management/pkg/service"
 )
 
 func main() {

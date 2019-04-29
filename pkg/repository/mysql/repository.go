@@ -2,7 +2,7 @@ package mysql
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/lfourky/db-access/pkg/repository"
+	"github.com/lfourky/go-transaction-management/pkg/repository"
 )
 
 type Repository struct {

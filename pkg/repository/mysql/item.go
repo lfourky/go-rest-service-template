@@ -3,7 +3,7 @@ package mysql
 import (
 	"errors"
 
-	"github.com/lfourky/db-access/pkg/model"
+	"github.com/lfourky/go-transaction-management/pkg/model"
 )
 
 type Item struct {

@@ -1,6 +1,8 @@
 package repository
 
-import "github.com/lfourky/db-access/pkg/model"
+import (
+	"github.com/lfourky/go-transaction-management/pkg/model"
+)
 
 type Store interface {
 	Users() User

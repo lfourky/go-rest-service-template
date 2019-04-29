@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/lfourky/db-access/pkg/model"
-	"github.com/lfourky/db-access/pkg/repository"
+	"github.com/lfourky/go-transaction-management/pkg/model"
+	"github.com/lfourky/go-transaction-management/pkg/repository"
 )
 
 type User struct {
