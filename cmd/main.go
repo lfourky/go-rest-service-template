@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 
+	"github.com/lfourky/go-transaction-management/pkg/handler"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/lfourky/go-transaction-management/pkg/repository/mysql"
-	"github.com/lfourky/go-transaction-management/pkg/service"
+	"github.com/lfourky/go-transaction-management/pkg/service/mail"
+	"github.com/lfourky/go-transaction-management/pkg/service/usecase"
 )
 
 func main() {
@@ -23,13 +26,14 @@ func main() {
 	}
 
 	mysqlRepo := mysql.NewRepository(db)
+	smtpSender := mail.NewSMTPSender(1234, "", "", "", "", "")
 
-	// Pass these to handlers or whatevs
-	userService := service.NewUser(mysqlRepo)
-	itemService := service.NewItem(mysqlRepo)
-	cartService := service.NewCart(mysqlRepo)
+	usecase := usecase.New(mysqlRepo, smtpSender)
 
-	_, _ = userService.DemonstrateTransaction()
-	_, _ = itemService.DemonstrateTransaction()
-	_, _ = cartService.DemonstrateTransaction()
+	userHandler := handler.NewUserHandler(usecase)
+	itemHandler := handler.NewItemHandler(usecase)
+
+	_ = userHandler
+	_ = itemHandler
+
 }

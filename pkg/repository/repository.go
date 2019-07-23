@@ -7,7 +7,6 @@ import (
 type Store interface {
 	Users() User
 	Items() Item
-	Carts() Cart
 	UnitOfWork
 }
 
@@ -18,16 +17,12 @@ type UnitOfWork interface {
 }
 
 type User interface {
-	FindUserByID(id string) (*model.User, error)
-	FindUserByName(name string) (*model.User, error)
+	Create(user *model.User) error
+	FindByEmail(email string) (*model.User, error)
+	FindByID(id string) (*model.User, error)
 }
 
 type Item interface {
-	FindItemByID(id string) (*model.Item, error)
-	FindItemByName(name string) (*model.Item, error)
-}
-
-type Cart interface {
-	FindCartByID(id string) (*model.Cart, error)
-	FindCartByItem(i model.Item) (*model.Cart, error)
+	Create(item *model.Item) error
+	Delete(item *model.Item) error
 }

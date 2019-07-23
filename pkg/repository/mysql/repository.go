@@ -9,7 +9,6 @@ type Repository struct {
 	db    *gorm.DB
 	users repository.User
 	items repository.Item
-	carts repository.Cart
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -19,7 +18,6 @@ func NewRepository(db *gorm.DB) *Repository {
 
 	r.users = &User{Repository: r}
 	r.items = &Item{Repository: r}
-	r.carts = &Cart{Repository: r}
 
 	return r
 }
@@ -46,8 +44,4 @@ func (r *Repository) Users() repository.User {
 
 func (r *Repository) Items() repository.Item {
 	return r.items
-}
-
-func (r *Repository) Carts() repository.Cart {
-	return r.carts
 }
