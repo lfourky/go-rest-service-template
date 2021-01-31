@@ -21,7 +21,7 @@ func TestRegisterUser(t *testing.T) {
 	// 	store.On("BeginTransaction").Return(txStore, nil)
 	// 	txStore.On("Users").Return(userRepo)
 	// 	userRepo.On("FindByEmail", userEmail).Return(nil, nil)
-	// 	userRepo.On("Create", &model.User{
+	// 	userRepo.On("Create", &domain.User{
 	// 		Name:  userName,
 	// 		Email: userEmail,
 	// 	}).Return(nil)

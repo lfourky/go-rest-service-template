@@ -10,12 +10,12 @@ func TestCreateItem(t *testing.T) {
 	// t.Run("item gets created", func(t *testing.T) {
 	// 	u, store, itemRepo, _, _ := setupUsecase()
 
-	// 	expectedItem := &model.Item{
+	// 	expectedItem := &domain.Item{
 	// 		Name: "item_name",
 	// 	}
 
 	// 	store.On("Items").Return(itemRepo)
-	// 	itemRepo.On("Create", &model.Item{
+	// 	itemRepo.On("Create", &domain.Item{
 	// 		Name: "item_name",
 	// 	}).Return(nil)
 
@@ -28,7 +28,7 @@ func TestCreateItem(t *testing.T) {
 	// 	u, store, itemRepo, _, _ := setupUsecase()
 
 	// 	store.On("Items").Return(itemRepo)
-	// 	itemRepo.On("Create", &model.Item{
+	// 	itemRepo.On("Create", &domain.Item{
 	// 		Name: "item_name",
 	// 	}).Return(unexpectedError)
 

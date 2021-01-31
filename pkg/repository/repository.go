@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"github.com/lfourky/go-rest-service-template/pkg/model"
+	"github.com/lfourky/go-rest-service-template/pkg/model/domain"
 )
 
 type Store interface {
-	Users() User
-	Items() Item
+	User() User
+	Item() Item
 	UnitOfWork
 }
 
@@ -17,12 +17,13 @@ type UnitOfWork interface {
 }
 
 type User interface {
-	Create(user *model.User) error
-	FindByEmail(email string) (*model.User, error)
-	FindByID(id string) (*model.User, error)
+	Create(user *domain.User) error
+	FindAll() ([]*domain.User, error)
+	FindByID(id domain.UUID) (*domain.User, error)
+	FindByEmail(email string) (*domain.User, error)
 }
 
 type Item interface {
-	Create(item *model.Item) error
-	Delete(item *model.Item) error
+	Create(item *domain.Item) error
+	FindAll() ([]*domain.Item, error)
 }

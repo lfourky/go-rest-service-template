@@ -10,18 +10,11 @@ type SMTPSender struct {
 	senderAddress string
 }
 
-func NewSMTPSender(
-	smtpPort uint,
-	smtpHost,
-	smtpUser,
-	smtpPassword,
-	senderName,
-	senderAddress string,
-) *SMTPSender {
+func NewSMTPSender(cfg Config) *SMTPSender {
 	return &SMTPSender{
-		dialer:        gomail.NewDialer(smtpHost, int(smtpPort), smtpUser, smtpPassword),
-		senderName:    senderName,
-		senderAddress: senderAddress,
+		dialer:        gomail.NewDialer(cfg.SMTPHost, int(cfg.SMTPPort), cfg.SMTPUser, cfg.SMTPPassword),
+		senderName:    cfg.SenderName,
+		senderAddress: cfg.SenderAddress,
 	}
 }
 

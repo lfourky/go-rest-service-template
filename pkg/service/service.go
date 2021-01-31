@@ -1,15 +1,9 @@
 package service
 
-import "github.com/lfourky/go-rest-service-template/pkg/model"
+import "time"
 
-type User interface {
-	RegisterUser(email, name string) error
-	FindUserByID(id string) (*model.User, error)
-	FindUserByEmail(email string) (*model.User, error)
-}
-
-type Item interface {
-	CreateItem(name string) (*model.Item, error)
+type Clock interface {
+	Now() time.Time
 }
 
 type MailSender interface {

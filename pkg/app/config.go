@@ -1,19 +1,25 @@
 package app
 
 import (
+	"github.com/lfourky/go-rest-service-template/pkg/repository/mysql"
+	"github.com/lfourky/go-rest-service-template/pkg/repository/postgres"
+	"github.com/lfourky/go-rest-service-template/pkg/server"
 	"github.com/lfourky/go-rest-service-template/pkg/service/log"
+	"github.com/lfourky/go-rest-service-template/pkg/service/mail"
 )
 
-// Config holds the general application configuration.
 type Config struct {
-	Logger log.Config
-	Info   InfoConfig
+	Logger         log.Config
+	Server         server.Config
+	Info           InfoConfig
+	PostgresConfig postgres.Config
+	MySQLConfig    mysql.Config
+	Mail           mail.Config
 }
 
-// InfoConfig configures application information.
 type InfoConfig struct {
 	Version     string
 	BuildDate   string
-	Description string
+	ServiceName string
 	CommitHash  string
 }

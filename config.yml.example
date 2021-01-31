@@ -1,0 +1,30 @@
+server:
+  address: localhost:8080
+  debug: true
+  read_timeout: 10s
+  write_timeout: 10s
+  cors:
+    allow_credentials: true
+    methods: POST GET PATCH PUT DELETE
+    headers: Content-Type Authorization Access-Control-Allow-Origin Access-Control-Allow-Credentials
+
+database:
+  host: localhost
+  port: 5432
+  name: go_rest_service
+  user: postgres
+  password: root
+  log_mode: true
+
+mail:
+  sender_name: Go REST service
+  sender_address: <sender email address>
+  smtp:
+    port: 587
+    host: smtp.gmail.com
+    user: <smtp user>
+    password: <smtp password>
+
+log:
+  level: INFO
+  type: text

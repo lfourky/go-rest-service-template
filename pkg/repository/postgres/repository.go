@@ -1,4 +1,4 @@
-package mysql
+package postgres
 
 import (
 	"database/sql"
@@ -9,7 +9,7 @@ import (
 	"github.com/lfourky/go-rest-service-template/pkg/repository"
 	"github.com/lfourky/go-rest-service-template/pkg/service/log"
 	"github.com/sirupsen/logrus"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
@@ -23,16 +23,14 @@ type Repository struct {
 }
 
 func New(cfg Config, logger *log.Logger) (repository.Store, error) {
-	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true&loc=UTC",
-		cfg.User,
-		cfg.Password,
+	db, err := gorm.Open(postgres.Open(fmt.Sprintf(
+		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		cfg.Host,
 		cfg.Port,
+		cfg.Username,
+		cfg.Password,
 		cfg.DatabaseName,
-	)
-
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	)), &gorm.Config{
 		Logger: gormLogger(cfg, logger),
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
@@ -59,6 +57,7 @@ func (r *Repository) BeginTransaction() (repository.Store, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
+
 	return newWithDB(tx), nil
 }
 

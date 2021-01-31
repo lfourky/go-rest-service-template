@@ -6,7 +6,7 @@ import (
 
 var (
 	// Used globally in tests - not to be altered.
-	unexpectedError = errors.New("unexpected error")
+	errUnexpected = errors.New("unexpected error")
 )
 
 // func setupUsecase() (*usecase.Usecase, *repomocks.Store, *repomocks.Item, *repomocks.User, *servicemocks.MailSender) {

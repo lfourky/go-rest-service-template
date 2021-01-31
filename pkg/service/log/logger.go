@@ -15,7 +15,8 @@ const (
 
 // Logger is the application logger.
 type Logger struct {
-	*log.Logger
+	engine *log.Logger
+	*log.Entry
 }
 
 // New creates a new logger.
@@ -40,10 +41,21 @@ func New(cfg Config) (*Logger, error) {
 	}
 
 	engine.SetLevel(lvl)
-	engine.SetReportCaller(true)
+
+	if cfg.Level == logLevelDebug {
+		engine.SetReportCaller(true)
+	}
+
+	contextLogger := engine.WithFields(log.Fields{
+		"service":  cfg.DefaultFields.Service,
+		"hostname": cfg.DefaultFields.Hostname,
+		"version":  cfg.DefaultFields.Version,
+		"build":    cfg.DefaultFields.Build,
+	})
 
 	return &Logger{
-		engine,
+		engine: engine,
+		Entry:  contextLogger,
 	}, nil
 }
 

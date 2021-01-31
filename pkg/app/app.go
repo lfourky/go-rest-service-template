@@ -1,34 +1,69 @@
 package app
 
 import (
-	"github.com/lfourky/go-rest-service-template/pkg/handler"
+	"github.com/lfourky/go-rest-service-template/pkg/repository/postgres"
+	"github.com/lfourky/go-rest-service-template/pkg/server"
+	"github.com/lfourky/go-rest-service-template/pkg/server/handler"
 	"github.com/lfourky/go-rest-service-template/pkg/service/log"
 	"github.com/lfourky/go-rest-service-template/pkg/service/mail"
-	"github.com/lfourky/go-rest-service-template/pkg/service/usecase"
-	"github.com/sirupsen/logrus"
+	"github.com/lfourky/go-rest-service-template/pkg/service/time"
+	"github.com/lfourky/go-rest-service-template/pkg/service/validation"
+	"github.com/lfourky/go-rest-service-template/pkg/usecase"
 )
 
-// Run runs the application.
-// nolint: funlen
 func Run(cfg Config) {
 	logger, err := log.New(cfg.Logger)
 	if err != nil {
 		panic(err)
 	}
 
-	logger.WithFields(logrus.Fields{
-		"version":   cfg.Info.Version,
-		"buildDate": cfg.Info.BuildDate,
-	}).Info(cfg.Info.Description)
+	// Setup repository.
+	db, err := postgres.New(cfg.PostgresConfig, logger)
+	// db, err := mysql.New(cfg.MySQLConfig, logger)
+	if err != nil {
+		logger.WithError(err).Fatal("unable to connect to the database")
+	}
 
-	// mysqlRepo := mysql.NewRepository(db)
-	smtpSender := mail.NewSMTPSender(1234, "", "", "", "", "")
+	// Setup services.
+	clock := &time.Clock{}
 
-	usecase := usecase.New(nil, smtpSender)
+	smtpSender := mail.NewSMTPSender(cfg.Mail)
 
-	userHandler := handler.NewUserHandler(usecase)
-	itemHandler := handler.NewItemHandler(usecase)
+	validator, err := validation.NewValidator()
+	if err != nil {
+		logger.WithError(err).Fatal("unable to create validator")
+	}
 
-	_ = userHandler
-	_ = itemHandler
+	// Setup server.
+	restServer := server.New(cfg.Server, clock, logger)
+
+	// Setup validation.
+	restServer.SetValidation(validator, &validation.Binder{})
+	restServer.SetErrorHandler(server.ErrorHandler(logger))
+
+	// Setup usecases.
+	usecase := usecase.New(db, smtpSender, logger)
+
+	// Setup handlers.
+	userHandler := handler.NewUser(usecase)
+	itemHandler := handler.NewItem(usecase)
+	statusHandler := handler.NewStatus(cfg.Info.Version, cfg.Info.BuildDate, cfg.Info.ServiceName, cfg.Info.CommitHash)
+
+	// Setup routes.
+	routes := restServer.Routes()
+	routes.GET("/version", statusHandler.Version)
+
+	v1 := routes.Group("v1")
+
+	items := v1.Group("/item")
+	items.POST("", itemHandler.CreateItem)
+	items.GET("", itemHandler.FindAll)
+
+	users := v1.Group("/user")
+	users.GET("", userHandler.FindAll)
+	users.POST("", userHandler.RegisterUser)
+
+	if err := restServer.Run(); err != nil {
+		logger.WithError(err).Error("server shutdown")
+	}
 }

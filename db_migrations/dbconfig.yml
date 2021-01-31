@@ -1,0 +1,5 @@
+local:
+    dialect: postgres
+    datasource: host=localhost dbname=go_rest_service user=postgres password=root sslmode=disable
+    dir: .
+    table: migrations
