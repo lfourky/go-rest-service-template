@@ -3,9 +3,9 @@ package usecase
 import (
 	"fmt"
 
-	"github.com/lfourky/go-transaction-management/pkg/model"
-	"github.com/lfourky/go-transaction-management/pkg/repository"
-	"github.com/lfourky/go-transaction-management/pkg/service"
+	"github.com/lfourky/go-rest-service-template/pkg/model"
+	"github.com/lfourky/go-rest-service-template/pkg/repository"
+	"github.com/lfourky/go-rest-service-template/pkg/service"
 	"github.com/pkg/errors"
 )
 

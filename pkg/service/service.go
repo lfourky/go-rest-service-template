@@ -1,6 +1,6 @@
 package service
 
-import "github.com/lfourky/go-transaction-management/pkg/model"
+import "github.com/lfourky/go-rest-service-template/pkg/model"
 
 type User interface {
 	RegisterUser(email, name string) error

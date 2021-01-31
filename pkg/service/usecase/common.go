@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/lfourky/go-transaction-management/pkg/repository"
+	"github.com/lfourky/go-rest-service-template/pkg/repository"
 )
 
 func rollbackOnError(tx repository.Store, txErr error) {

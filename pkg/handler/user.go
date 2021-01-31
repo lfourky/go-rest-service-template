@@ -1,6 +1,6 @@
 package handler
 
-import "github.com/lfourky/go-transaction-management/pkg/service"
+import "github.com/lfourky/go-rest-service-template/pkg/service"
 
 type User struct {
 	userService service.User

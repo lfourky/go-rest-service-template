@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/lfourky/go-transaction-management/pkg/model"
-	"github.com/lfourky/go-transaction-management/pkg/repository"
+	"github.com/lfourky/go-rest-service-template/pkg/model"
+	"github.com/lfourky/go-rest-service-template/pkg/repository"
 )
 
 type CreateItem struct {

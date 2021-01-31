@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"github.com/lfourky/go-transaction-management/pkg/model"
+	"github.com/lfourky/go-rest-service-template/pkg/model"
 )
 
 type User struct {
