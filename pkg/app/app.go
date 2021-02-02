@@ -4,6 +4,7 @@ import (
 	"github.com/lfourky/go-rest-service-template/pkg/repository/postgres"
 	"github.com/lfourky/go-rest-service-template/pkg/server"
 	"github.com/lfourky/go-rest-service-template/pkg/server/handler"
+	"github.com/lfourky/go-rest-service-template/pkg/service/http"
 	"github.com/lfourky/go-rest-service-template/pkg/service/log"
 	"github.com/lfourky/go-rest-service-template/pkg/service/mail"
 	"github.com/lfourky/go-rest-service-template/pkg/service/time"
@@ -33,6 +34,9 @@ func Run(cfg Config) {
 	if err != nil {
 		logger.WithError(err).Fatal("unable to create validator")
 	}
+
+	httpClient := http.NewClient(logger, http.DefaultClientOptions...)
+	_ = httpClient
 
 	// Setup server.
 	restServer := server.New(cfg.Server, clock, logger)
