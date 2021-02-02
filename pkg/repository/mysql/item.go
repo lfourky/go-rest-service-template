@@ -19,5 +19,6 @@ func (m *Item) Delete(item *domain.Item) error {
 
 func (m *Item) FindAll() ([]*domain.Item, error) {
 	var items []*domain.Item
+
 	return items, m.db.Find(&items).Error
 }

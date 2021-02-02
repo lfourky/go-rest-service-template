@@ -39,5 +39,6 @@ func (m *User) Create(user *domain.User) error {
 
 func (m *User) FindAll() ([]*domain.User, error) {
 	var users []*domain.User
+
 	return users, m.db.Find(&users).Error
 }

@@ -74,6 +74,7 @@ func ErrorHandler(logger *log.Logger) echo.HTTPErrorHandler {
 				"origin": "echo",
 				"id":     requestID,
 			}).WithError(echoErr).Info()
+
 			httpErr.HTTPCode = echoErr.Code
 
 			if msg, ok := echoErr.Message.(string); ok {

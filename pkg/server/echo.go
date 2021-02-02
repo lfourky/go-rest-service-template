@@ -68,10 +68,11 @@ func (r *REST) Routes() *echo.Group {
 // Run runs the REST server.
 func (r *REST) Run() error {
 	r.logger.WithField("address", r.address).Info("starting server")
+
 	return gracehttp.Serve(r.engine.Server)
 }
 
-// Since logrus & echo loggers are incompatible (interface-wise)
+// Since logrus & echo loggers are incompatible (interface-wise).
 func loggerMiddleware(logger *log.Logger, clock service.Clock) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -84,6 +85,7 @@ func loggerMiddleware(logger *log.Logger, clock service.Clock) echo.MiddlewareFu
 			}
 
 			bytesIn := "0"
+
 			contentLength := req.Header.Get(echo.HeaderContentLength)
 			if contentLength != "" {
 				bytesIn = contentLength

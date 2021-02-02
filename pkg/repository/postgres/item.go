@@ -15,5 +15,6 @@ func (p *Item) Create(item *domain.Item) error {
 
 func (p *Item) FindAll() ([]*domain.Item, error) {
 	var items []*domain.Item
+
 	return items, p.db.Find(&items).Error
 }

@@ -39,5 +39,6 @@ func (p *User) Create(user *domain.User) error {
 
 func (p *User) FindAll() ([]*domain.User, error) {
 	var users []*domain.User
+
 	return users, p.db.Preload("Items").Find(&users).Error
 }

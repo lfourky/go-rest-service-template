@@ -2,38 +2,88 @@ package usecase_test
 
 import (
 	"testing"
+
+	"github.com/lfourky/go-rest-service-template/pkg/model/domain"
+	"github.com/lfourky/go-rest-service-template/pkg/model/dto"
+	"github.com/lfourky/go-rest-service-template/pkg/usecase"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCreateItem(t *testing.T) {
-	// assert := assert.New(t)
+	assert := assert.New(t)
 
-	// t.Run("item gets created", func(t *testing.T) {
-	// 	u, store, itemRepo, _, _ := setupUsecase()
+	var (
+		userUUID = domain.UUID("55a23280-6599-11eb-ae93-0242ac130002")
 
-	// 	expectedItem := &domain.Item{
-	// 		Name: "item_name",
-	// 	}
+		request = &dto.CreateItemRequest{
+			UserID: userUUID.String(),
+			Name:   "item-name",
+		}
+	)
 
-	// 	store.On("Items").Return(itemRepo)
-	// 	itemRepo.On("Create", &domain.Item{
-	// 		Name: "item_name",
-	// 	}).Return(nil)
+	type createItemSuite struct {
+		*usecaseSuite
 
-	// 	item, err := u.CreateItem("item_name")
-	// 	assert.NoError(err)
-	// 	assert.Equal(expectedItem, item)
-	// })
+		user *domain.User
+		item *domain.Item
+	}
 
-	// t.Run("item creation fails due to unexpected db error", func(t *testing.T) {
-	// 	u, store, itemRepo, _, _ := setupUsecase()
+	setup := func() *createItemSuite {
+		return &createItemSuite{
+			usecaseSuite: setupUsecase(),
 
-	// 	store.On("Items").Return(itemRepo)
-	// 	itemRepo.On("Create", &domain.Item{
-	// 		Name: "item_name",
-	// 	}).Return(unexpectedError)
+			user: &domain.User{
+				PrimaryKey: domain.PrimaryKey{
+					ID: userUUID,
+				},
+			},
+			item: &domain.Item{
+				Name:   "item-name",
+				UserID: userUUID,
+			},
+		}
+	}
 
-	// 	item, err := u.CreateItem("item_name")
-	// 	assert.EqualError(err, unexpectedError.Error())
-	// 	assert.Nil(item)
-	// })
+	tests := []struct {
+		name     string
+		err      error
+		request  *dto.CreateItemRequest
+		response *dto.CreateItemResponse
+		mocks    func(suite *createItemSuite)
+	}{
+		{
+			name:    "item created successfully",
+			request: request,
+			response: &dto.CreateItemResponse{
+				Item: dto.Item{
+					Name: "item-name",
+				},
+			},
+			mocks: func(suite *createItemSuite) {
+				suite.store.UserMock.On("FindByID", suite.user.ID).Return(suite.user, nil)
+				suite.store.ItemMock.On("Create", suite.item).Return(nil)
+			},
+		},
+		{
+			name:    "unable to create item due to unexpected error when creating item",
+			request: request,
+			err:     usecase.ErrDatabaseItemCreationFailed,
+			mocks: func(suite *createItemSuite) {
+				suite.store.UserMock.On("FindByID", suite.user.ID).Return(suite.user, nil)
+				suite.store.ItemMock.On("Create", suite.item).Return(errUnexpected)
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			suite := setup()
+			test.mocks(suite)
+			resp, err := suite.uc.CreateItem(test.request)
+			assert.Equal(test.err, err)
+			assert.Equal(test.response, resp)
+			mock.AssertExpectationsForObjects(t, suite.store, suite.store.ItemMock, suite.store.UserMock)
+		})
+	}
 }

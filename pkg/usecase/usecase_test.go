@@ -2,20 +2,30 @@ package usecase_test
 
 import (
 	"errors"
+
+	repomock "github.com/lfourky/go-rest-service-template/pkg/repository/mock"
+	"github.com/lfourky/go-rest-service-template/pkg/service/log"
+	servicemock "github.com/lfourky/go-rest-service-template/pkg/service/mock"
+	"github.com/lfourky/go-rest-service-template/pkg/usecase"
 )
 
 var (
-	// Used globally in tests - not to be altered.
 	errUnexpected = errors.New("unexpected error")
 )
 
-// func setupUsecase() (*usecase.Usecase, *repomocks.Store, *repomocks.Item, *repomocks.User, *servicemocks.MailSender) {
-// 	store := &repomocks.Store{}
-// 	itemRepository := &repomocks.Item{}
-// 	userRepository := &repomocks.User{}
+type usecaseSuite struct {
+	store      *repomock.Store
+	uc         *usecase.UseCase
+	mailSender *servicemock.MailSender
+}
 
-// 	mailSender := &servicemocks.MailSender{}
+func setupUsecase() *usecaseSuite {
+	store := repomock.New()
+	mailSender := &servicemock.MailSender{}
 
-// 	u := usecase.New(store, mailSender)
-// 	return u, store, itemRepository, userRepository, mailSender
-// }
+	return &usecaseSuite{
+		uc:         usecase.New(store, mailSender, log.TestLogger()),
+		store:      store,
+		mailSender: mailSender,
+	}
+}

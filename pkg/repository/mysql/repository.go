@@ -59,6 +59,7 @@ func (r *Repository) BeginTransaction() (repository.Store, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
+
 	return newWithDB(tx), nil
 }
 

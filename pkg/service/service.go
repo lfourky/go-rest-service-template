@@ -1,6 +1,7 @@
 package service
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/lfourky/go-rest-service-template/pkg/service/http/option"
@@ -15,5 +16,5 @@ type MailSender interface {
 }
 
 type HTTPClient interface {
-	Do(method, url string, body interface{}, options ...option.RequestOption)
+	Do(method, url string, body interface{}, options ...option.RequestOption) (*http.Response, error)
 }
