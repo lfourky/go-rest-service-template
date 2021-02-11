@@ -26,7 +26,7 @@ Position yourself in the **root** directory and run the tests
 
 Create `go_rest_service` database in your PostgreSQL instance
 
-(Optional) Position yourself in the **migrations/** directory and run
+(Optional) Position yourself in the **db_migrations** directory and run
 
     sql-migrate up --env integration_test
 
