@@ -1,5 +1,6 @@
 package main
 
+// nolint: gci //Remove after making a decision postgres / mysql and removing the other import
 import (
 	"os"
 	"strings"
@@ -11,6 +12,7 @@ import (
 	"github.com/lfourky/go-rest-service-template/pkg/service/mail"
 	"github.com/spf13/viper"
 
+	// nolint: godot
 	// _ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
@@ -19,6 +21,7 @@ const (
 	serviceName = "Go REST service"
 )
 
+// nolint: gochecknoglobals
 var (
 	version    = "/"
 	buildDate  = "/"

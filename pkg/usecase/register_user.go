@@ -58,8 +58,11 @@ func (uc *registerUser) RegisterUser(request *dto.RegisterUserRequest) (*dto.Reg
 		return nil, ErrDatabaseInternal
 	}
 
-	subject := "Successful registration"
-	body := fmt.Sprintf("Thanks for registering, %s", user.Name)
+	var (
+		subject = "Successful registration"
+		body    = fmt.Sprintf("Thanks for registering, %s", user.Name)
+	)
+
 	if err = uc.mailSender.SendMail(user.Email, subject, body); err != nil {
 		uc.logger.WithError(err).Warn("unable to send mail")
 

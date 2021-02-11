@@ -1,8 +1,6 @@
 package log
 
 import (
-	"fmt"
-
 	log "github.com/sirupsen/logrus"
 )
 
@@ -19,7 +17,6 @@ type Logger struct {
 	*log.Entry
 }
 
-// New creates a new logger.
 func New(cfg Config) (*Logger, error) {
 	engine := log.New()
 
@@ -32,12 +29,12 @@ func New(cfg Config) (*Logger, error) {
 			FullTimestamp:   true,
 		}
 	default:
-		return nil, fmt.Errorf("bad log type provided; supported log types are: [json,text]; got: %s", cfg.Type)
+		return nil, errWrongLogType
 	}
 
 	lvl, err := log.ParseLevel(cfg.Level)
 	if err != nil {
-		return nil, fmt.Errorf("bad log level provided: %w", err)
+		return nil, wrongLogLevelError(err)
 	}
 
 	engine.SetLevel(lvl)

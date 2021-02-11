@@ -52,6 +52,15 @@ func (c *Client) Do(method, url string, body interface{}, options ...requestOpti
 	return resp.RawResponse, nil
 }
 
+const (
+	retryerConfigMaxRetries  = 2
+	retryerConfigWaitTime    = time.Second
+	retryerConfigMaxWaitTime = time.Second * 2
+	retryerconfigTimeout     = time.Second * 3
+)
+
+// DefaultClientOptions returns the default client options.
+// nolint: gochecknoglobals
 var DefaultClientOptions = []clientOption{
 	ClientOptionTraceEnabled(true),
 	ClientOptionRetryConditions{
@@ -62,10 +71,10 @@ var DefaultClientOptions = []clientOption{
 		http.StatusGatewayTimeout,
 	},
 	ClientOptionRetryConfiguration{
-		MaxRetries:  2,
-		WaitTime:    time.Second,
-		MaxWaitTime: time.Second * 2,
-		Timeout:     time.Second * 3,
+		MaxRetries:  retryerConfigMaxRetries,
+		WaitTime:    retryerConfigWaitTime,
+		MaxWaitTime: retryerConfigMaxWaitTime,
+		Timeout:     retryerconfigTimeout,
 	},
 }
 
