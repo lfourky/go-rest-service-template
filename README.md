@@ -12,7 +12,7 @@ Install **sql-migrate**
 
     go get -v github.com/rubenv/sql-migrate/...
 
-Position yourself in the **db_migrations/** directory and run
+Position yourself in the **db_migrations** directory and run
 
     sql-migrate up --env local
 
