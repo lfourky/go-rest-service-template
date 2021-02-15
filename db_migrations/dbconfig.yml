@@ -3,3 +3,9 @@ local:
     datasource: host=localhost dbname=go_rest_service user=postgres password=root sslmode=disable
     dir: .
     table: migrations
+
+integration_tests:
+    dialect: postgres
+    datasource: host=localhost dbname=go_rest_service_test user=postgres password=root sslmode=disable
+    dir: .
+    table: migrations
