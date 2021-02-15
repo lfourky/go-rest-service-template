@@ -1,0 +1,14 @@
+server:
+  address: localhost:38080
+
+database:
+  host: localhost
+  port: 5432
+  name: go_rest_service_test
+  user: postgres
+  password: root
+
+mail:
+  smtp:
+    port: 38587
+    host: localhost
